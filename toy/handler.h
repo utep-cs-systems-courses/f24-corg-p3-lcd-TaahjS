@@ -1,5 +1,6 @@
 #ifndef buzzer_included
 #define buzzer_included
+#endif
 
 void buzzer_init();
 void buzzer_set_period(short cycles);
@@ -14,7 +15,7 @@ void buzzer_set_period(short cycles);
 #define SWITCHES 15
 
 void switch_init();
-void switch_interrupt_handler();
+int switch_interrupt_handler();
 
 #define LED BIT6
 
