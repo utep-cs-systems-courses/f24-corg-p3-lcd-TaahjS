@@ -1,3 +1,5 @@
+#include <msp430.h>
+
 #ifndef buzzer_included
 #define buzzer_included
 #endif
@@ -21,5 +23,7 @@ int switch_interrupt_handler();
 
 void led_init();
 void led_flip();
+
+int blink_screen(int timer);
 
 #endif

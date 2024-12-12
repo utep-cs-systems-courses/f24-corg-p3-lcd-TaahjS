@@ -94,6 +94,28 @@ void drawString5x7(u_char col, u_char row, char *string,
   }
 }
 
+void drawString8x12(u_char col, u_char row, char *string, u_int fgColorBGR, u_int bgColorBGR) {
+  u_char cols = col;
+  while (*string) {
+    drawChar8x12(cols, row, *string++, fgColorBGR, bgColorBGR);
+    cols += 9;
+  }
+
+}
+
+void drawChar8x12(u_char rcol, u_char rrow, char c, u_int fgColorBGR, u_int bgColorBGR){
+  u_char col = 0;
+  u_char row = 0;
+  u_char oc = c - 0x20;
+  for (row = 0; row < 12; row++) {
+    u_char bits = font_8x12[oc][row]; 
+    for (col = 0; col < 8; col++) {  
+      u_int colorBGR = (bits & (1 << (7 - col))) ? fgColorBGR : bgColorBGR;
+      drawPixel(rcol + col, rrow + row, colorBGR); 
+    }
+  }
+}
+
 
 /** Draw rectangle outline
  *  

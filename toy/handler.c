@@ -20,6 +20,8 @@ void switch_init(){
   P2IE |= SWITCHES;
   P2OUT |= SWITCHES;
   P2DIR &= ~SWITCHES;
+
+  switch_interrupt_handler();
 }
 
 int switch_interrupt_handler(){
@@ -27,13 +29,18 @@ int switch_interrupt_handler(){
   P2IES |= (p2val & SWITCHES);
   P2IES &= (p2val | ~SWITCHES);
 
-  if(p2val & ~SW1){ //pressed
+  char b1 = (p2val & SW1) ? 0:SW1;
+  char b2 = (p2val & SW2) ? 0:SW2;
+  char b3 = (p2val & SW3) ? 0:SW3;
+  char b4 = (p2val & SW4) ? 0:SW4;
+
+  if(b1){ //pressed
     return -1; //left
-  }else if(p2val & ~SW2){
+  }else if(b2){
     return 1; //right
-  }else if(p2val & ~SW3){
+  }else if(b3){
     return -8; //up
-  }else if(p2val & ~SW3){
+  }else if(b4){
     return 8; //down
   }else{
     return 0;
@@ -45,6 +52,6 @@ void led_init(){ //sets up P1OUT and turns off LED
   P1OUT &= ~LED;
 }
 
-void led_flip(){
+void led_flip(){ //turns off or turns on
   P1OUT ^= LED;
 }
