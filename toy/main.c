@@ -19,7 +19,6 @@ void update_screen(); //move player pixels
 //State 3 Functions
 void success(); //game end
 void game_over();
-int blink_screen(int timer);
 
 char time_string[] = "00:00";
 int time[] = {0, 0, -1}, pos = 9, newpos = 9, interrupt = 0, state = 1, timer = 0;
@@ -78,7 +77,10 @@ __interrupt_vec(WDT_VECTOR) WDT(){
     }
   }else if(state == 3){
     interrupt++;
-    if(interrupt >= 125){
+    if(interrupt >= 188){
+      if(timer == 0){
+	clearScreen(COLOR_BLACK);
+      }
       timer = blink_screen(timer);
       interrupt = 0;
     }
@@ -157,6 +159,7 @@ void move(){
     move_fail(1);
     return;
   }else if(maze[newpos] == 2){ //at exit
+    led_flip();
     success();
     return;
   }else{ //regular move
@@ -190,17 +193,5 @@ void success(){
 }
 
 void game_over(){
-  drawString8x12(40, 50, "GAME OVER", COLOR_BLUE, COLOR_BLACK);
-}
-
-int blink_screen(int timer){
-  led_flip();
-  if(timer == 0){
-    clearScreen(COLOR_BLACK);
-    return 1;
-  }else{
-    game_over();
-    return 0;
-  }
-
+  drawString8x12(30, 50, "GAME OVER", COLOR_BLUE, COLOR_BLACK);
 }
